@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="ISO-8859-1">
+    <title>update Job</title>
+
+</head>
+
+<body>
+
+    <div class="container ">
+        <h1>Job Details</h1>
+        <hr>
+        <form action="#" (ngSubmit)="onSubmit()" method="POST">
+            <div class="form-group">
+                <label>Name</label>
+
+                <input type="text" id="name" [(ngModel)]="job.title" name="title" placeholder="Title"
+                    class="form-control mb-4 col-4">
+                <input type="text" id="postion" [(ngModel)]="job.description" name="description" placeholder="Description"
+                    class="form-control mb-4 col-4">
+                <input type="text" id="status" [(ngModel)]="job.location" name="location" placeholder="Location"
+                    class="form-control mb-4 col-4">
+                <input type="number" id="createdby" [(ngModel)]="job.salary" name="salary" placeholder="Salary"
+                    class="form-control mb-4 col-4">
+
+                <button type="submit" class="btn btn-dark col-2">Update
+                </button>
+            </div>
+        </form>
+        <hr>
+
+    </div>
+</body>
+
+</html>

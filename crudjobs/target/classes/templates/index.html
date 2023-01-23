@@ -1,0 +1,165 @@
+<form id="create-job-form">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"></textarea>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required>
+
+    <label for="salary">Salary:</label>
+    <input type="number" id="salary" name="salary" min="0" required>
+
+    <input type="button" value="Add Job" onclick="createJob()">
+        <label for="jobid">Job ID:</label>
+        <input type="number" id="jobId" name="jobId" min="1" required>
+        <input type="button" value="Get Job" onclick="getJob()">
+
+
+    <div id="job-info"></div>
+    <label for="update-job-id">Job ID:</label>
+    <input type="number" id="update-job-id" name="update-job-id" min="1" required>
+
+    <label for="update-title">Title:</label>
+    <input type="text" id="update-title" name="update-title">
+
+    <label for="update-description">Description:</label>
+    <textarea id="update-description" name="update-description"></textarea>
+
+    <label for="update-location">Location:</label>
+    <input type="text" id="update-location" name="update-location">
+
+    <label for="update-salary">Salary:</label>
+    <input type="number" id="update-salary" name="update-salary" min="0">
+
+    <input type="button" value="Update Job" onclick="updateJob()">
+    <label for="delete-job-id">Job ID:</label>
+    <input type="number" id="delete-job-id" name="delete-job-id" min="1" required>
+    <input type="button" value="Delete Job" onclick="deleteJob()">
+</form>
+<style>
+<style>
+    form {
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #ddd;
+    }
+    label {
+        font-size: 1.2em;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+    }
+    input[type=text], textarea {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+    input[type=submit], input[type=button] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type=submit]:hover, input[type=button]:hover {
+        background-color: #45a049;
+    }
+    #job-info {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function createJob() {
+  var job = {
+    title: $("#title").val(),
+    description: $("#description").val(),
+    location: $("#location").val(),
+    salary: $("#salary").val()
+  };
+
+  $.ajax({
+    type: "POST",
+    url: "/jobs",
+    contentType: "application/json; charset=utf-8",
+    data: JSON.stringify(job),
+    success: function(data) {
+      alert("Job created successfully!");
+    },
+    error: function(xhr, status, error) {
+      alert("Error: " + error);
+    }
+  });
+}
+function getJob() {
+  var jobId = $("#jobId").val();
+
+  $.ajax({
+    type: "GET",
+    url: "/jobs/" + jobId,
+    contentType: "application/json; charset=utf-8",
+    success: function(data) {
+      $("#job-info").html("Job Title: " + data.title + "<br>" + "Description: " + data.description + "<br>" + "Location: " + data.location + "<br>" + "Salary: " + data.salary);
+    },
+    error: function(xhr, status, error) {
+      alert("Error: " + error);
+    }
+  });
+}
+function updateJob() {
+    var jobId = $("#update-job-id").val();
+
+    var job = {
+        title: $("#update-title").val(),
+        description: $("#update-description").val(),
+        location: $("#update-location").val(),
+        salary: $("#update-salary").val()
+    };
+
+    $.ajax({
+        type: "PUT",
+        url: "/jobs/" + jobId,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(job),
+        success: function(data) {
+            if(data !== null) {
+                alert("Job updated successfully!");
+            } else {
+                alert("Error: Job with id " + jobId + " not found.");
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("Error: " + error);
+        }
+    });
+}
+function deleteJob() {
+  var jobId = $("#delete-job-id").val();
+
+  $.ajax({
+    type: "DELETE",
+    url: "/jobs/" + jobId,
+    contentType: "application/json; charset=utf-8",
+    success: function() {
+      alert("Job deleted successfully!");
+    },
+    error: function(xhr, status, error) {
+      alert("Error: " + error);
+    }
+  });
+}
+</script>
